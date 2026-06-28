@@ -16,22 +16,24 @@ st.set_page_config(
 # 🎨 STAGE 2: INJECT PREMIUM DARK MODE STYLING & ELIMINATE WHITE BLOCKS
 st.markdown("""
     <style>
+
         /* 1. Base App Canvas Background */
-        .stApp {
+        .stApp, [data-testid="stAppViewContainer"] {
             background-color: #0d0f12 !important;
             color: #e2e8f0 !important;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
             background: linear-gradient(135deg, #090a0f 0%, #11131e 50%, #1a1528 100%) !important;
         }
         
-        /* 2. DESTROY THE WHITE HEADER AND FOOTER BLOCKS */
-        [data-testid="stHeader"] {
+        /* 2. DESTROY THE WHITE HEADER, FOOTER, AND BOTTOM BLOCKS COMPLETELY */
+        [data-testid="stHeader"], 
+        [data-testid="stBottom"],
+        [data-testid="stBottomBlockContainer"],
+        footer {
             background-color: transparent !important;
             background: transparent !important;
-        }
-        [data-testid="stBottomBlockContainer"] {
-            background-color: transparent !important;
-            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
         }
         
         /* 3. Main Content Constraints */
