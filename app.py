@@ -227,6 +227,7 @@ st.markdown("<h1 style='color: #ffe066 !important; background: none; -webkit-tex
 st.markdown("<p style='font-size: 1.1rem; color: #abb2bf; margin-top: -10px;'>Works without the internet to keep your files 100% private.</p>", unsafe_allow_html=True)
 
 if not st.session_state.messages:
+    # STRING FIXED: Changed inner double quotes to single quotes to guarantee parsing compliance
     st.markdown("""
         <div class='glass-card'>
             <div style="margin-bottom: 16px;">
@@ -238,7 +239,7 @@ if not st.session_state.messages:
             
             <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
                 <strong style='color: #61afef;'>Step 1: Load Context</strong><br>
-                <span style='font-size: 0.9rem; color: #abb2bf;'>Click the <strong>"🎭 Load Demo Sample Data"</strong> button in the sidebar to instantly load mock corporate policies risk-free.</span>
+                <span style='font-size: 0.9rem; color: #abb2bf;'>Click the <strong>'🎭 Load Demo Sample Data'</strong> button in the sidebar to instantly load mock corporate policies risk-free.</span>
             </div>
             
             <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
