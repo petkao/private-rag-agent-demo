@@ -265,3 +265,33 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
             "role": "assistant", "content": mock_reply,
             "status": "Local Context Success", "mode": "Offline"
         })
+
+
+# =====================================================================
+# ⚡ THE FINISHING BLOW: JAVASCRIPT BACKGROUND STRIPPER
+# =====================================================================
+st.components.v1.html("""
+    <script>
+        function stripWhiteBlocks() {
+            // Find all potential bottom layout wrappers
+            const targets = [
+                window.parent.document.querySelector('[data-testid="stBottom"]'),
+                window.parent.document.querySelector('[data-testid="stBottomBlockContainer"]'),
+                window.parent.document.querySelector('footer')
+            ];
+            
+            targets.forEach(el => {
+                if (el) {
+                    el.style.backgroundColor = 'transparent';
+                    el.style.background = 'transparent';
+                    el.style.boxShadow = 'none';
+                    el.style.border = 'none';
+                }
+            });
+        }
+        
+        // Run immediately and keep checking for a few seconds to handle slow loading
+        stripWhiteBlocks();
+        setInterval(stripWhiteBlocks, 500);
+    </script>
+""", height=0)        
