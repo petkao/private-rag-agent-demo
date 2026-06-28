@@ -245,21 +245,34 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
     last_msg = st.session_state.messages[-1]["content"]
     with st.chat_message("assistant"):
         progress_box = st.empty()
-        progress_box.markdown("<div class='glass-card'>⚙️ Running local context match query...</div>", unsafe_allow_html=True)
-        time.sleep(0.5)
+        progress_box.markdown("<div class='glass-card'>⚙️ Evaluating routing parameters...</div>", unsafe_allow_html=True)
+        time.sleep(0.4)
+        
+        # Check for routing tokens
+        has_search = any(w in last_msg.lower() for w in ["search", "online", "pricing", "latest", "web"])
+        
+        if has_search:
+            progress_box.markdown("<div class='glass-card'>🌐 Accessing live web search indexes...</div>", unsafe_allow_html=True)
+            time.sleep(0.6)
+            mock_reply = f"This is a simulated real-time web search agent response! Your input token ('{last_msg}') triggered an online crawl path to safely extract current MacBook marketplace pricing while maintaining privacy barriers."
+            status_val, mode_val = "Web Retrieval Success", "RAG + Web Search"
+        else:
+            progress_box.markdown("<div class='glass-card'>⚙️ Querying local storage vault vectors...</div>", unsafe_allow_html=True)
+            time.sleep(0.6)
+            mock_reply = f"This is a local secure model inference summary. Your document vectors parsed '{last_msg}' successfully within your physical drive parameters without throwing any remote cloud exceptions."
+            status_val, mode_val = "Local Context Success", "Offline"
+            
         progress_box.empty()
         
-        mock_reply = f"This is a local secure model inference summary. Your document vectors parsed '{last_msg}' successfully within your physical drive parameters without throwing any remote cloud exceptions."
-        
-        st.markdown("""
+        st.markdown(f"""
             <div style="margin-bottom: 8px;">
-                <span class='status-badge status-badge-purple'>STATUS: Local Context Success</span>
-                <span class='status-badge status-badge-blue'>MODE: Offline</span>
+                <span class='status-badge status-badge-purple'>STATUS: {status_val}</span>
+                <span class='status-badge status-badge-blue'>MODE: {mode_val}</span>
             </div>
         """, unsafe_allow_html=True)
         st.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{mock_reply}</div>', unsafe_allow_html=True)
         
         st.session_state.messages.append({
             "role": "assistant", "content": mock_reply,
-            "status": "Local Context Success", "mode": "Offline"
+            "status": status_val, "mode": mode_val
         })
