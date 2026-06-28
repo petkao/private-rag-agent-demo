@@ -63,31 +63,12 @@ st.markdown("""
             color: #ffffff !important;
         }
         
-        /* 5. High-Visibility Custom Layout Cards */
-        .glass-card {
-            background: rgba(25, 28, 41, 0.6);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-            margin-bottom: 20px;
-        }
-        .benefit-card {
-            background: rgba(97, 175, 239, 0.05);
-            border-left: 4px solid #61afef;
-            padding: 15px;
-            border-radius: 4px 12px 12px 4px;
-            margin-top: 15px;
-        }
-        .testimonial-container {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px dashed rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 0.9rem;
-            color: #abb2bf;
-            margin-top: 25px;
+        /* 5. Custom Styled Alerts for Dark Context */
+        div[data-testid="stAlert"] {
+            background-color: rgba(25, 28, 41, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4) !important;
         }
         
         /* 6. Styled Template Prompt Chip Buttons */
@@ -151,7 +132,7 @@ st.markdown("""
             color: #98c379;
             border: 1px solid rgba(152, 195, 121, 0.25);
         }
-        .stMarkdown p, .stMarkdown span {
+        .stMarkdown p, .stMarkdown span, .stMarkdown li {
             color: #f1f5f9 !important;
         }
         .status-badge-blue { background-color: rgba(97, 175, 239, 0.12); color: #61afef; border: 1px solid rgba(97, 175, 239, 0.25); }
@@ -227,29 +208,18 @@ st.markdown("<h1 style='color: #ffe066 !important; background: none; -webkit-tex
 st.markdown("<p style='font-size: 1.1rem; color: #abb2bf; margin-top: -10px;'>Works without the internet to keep your files 100% private.</p>", unsafe_allow_html=True)
 
 if not st.session_state.messages:
-    # STRING FIXED: Changed inner double quotes to single quotes to guarantee parsing compliance
-    st.markdown("""
-        <div class='glass-card'>
-            <div style="margin-bottom: 16px;">
-                <span class='status-badge status-badge-blue'>🛡️ 100% Offline Control</span>
-                <span class='status-badge status-badge-purple'>🔒 Enterprise Security Vault</span>
-            </div>
-            
-            <div style='font-size: 1.1rem; font-weight: 600; color: #ffe066; margin-bottom: 12px;'>🚀 Quick Start Guide:</div>
-            
-            <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
-                <strong style='color: #61afef;'>Step 1: Load Context</strong><br>
-                <span style='font-size: 0.9rem; color: #abb2bf;'>Click the <strong>'🎭 Load Demo Sample Data'</strong> button in the sidebar to instantly load mock corporate policies risk-free.</span>
-            </div>
-            
-            <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
-                <strong style='color: #61afef;'>Step 2: Ask a Question</strong><br>
-                <span style='font-size: 0.9rem; color: #abb2bf;'>Select one of the pre-configured prompt cards below, or type your own question into the secure input box at the bottom.</span>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+    # REFACTOR: Native Streamlit containers replace raw HTML strings to avoid layout breaking
+    with st.container(border=True):
+        st.markdown("""
+            <span class='status-badge status-badge-blue'>🛡️ 100% Offline Control</span>
+            <span class='status-badge status-badge-purple'>🔒 Enterprise Security Vault</span>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("### 🚀 Quick Start Guide:")
+        st.markdown("**Step 1: Load Context** \nClick the **'🎭 Load Demo Sample Data'** button in the sidebar to instantly load mock corporate policies risk-free.")
+        st.markdown("**Step 2: Ask a Question** \nSelect one of the pre-configured prompt cards below, or type your own question into the secure input box at the bottom.")
 
-    st.markdown("<p style='font-size: 1rem; color: #ffe066; font-weight: 600; margin-bottom: 12px;'>📋 Step 3: Select a Sample Question to Test the Engine</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size: 1rem; color: #ffe066; font-weight: 600; margin-top: 20px; margin-bottom: 12px;'>📋 Step 3: Select a Sample Question to Test the Engine</p>", unsafe_allow_html=True)
     
     chip_col1, chip_col2, chip_col3 = st.columns(3)
     with chip_col1:
