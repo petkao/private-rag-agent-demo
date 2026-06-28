@@ -50,17 +50,19 @@ st.markdown("""
         div[data-testid="stSidebar"] {
             background: rgba(13, 15, 24, 0.95) !important;
         }
-        
-        /* Force Sidebar Expander Wording Text to Be Visible */
-        [data-testid="stSidebar"] .stDetails summary {
+                
+        /* FORCE ALL SIDEBAR EXPANDER COMPONENTS AND LABELS TO CRISP WHITE */
+        [data-testid="stSidebar"] details summary,
+        [data-testid="stSidebar"] details summary * {
             color: #ffffff !important;
             font-weight: 600 !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
-        [data-testid="stSidebar"] .stDetails summary svg {
+        [data-testid="stSidebar"] details summary svg {
             fill: #ffffff !important;
             color: #ffffff !important;
         }
-        
+
         /* 5. High-Visibility Custom Layout Cards */
         .glass-card {
             background: rgba(25, 28, 41, 0.6);
