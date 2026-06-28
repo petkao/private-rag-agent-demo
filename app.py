@@ -151,19 +151,11 @@ st.markdown("""
             color: #98c379;
             border: 1px solid rgba(152, 195, 121, 0.25);
         }
+        .stMarkdown p, .stMarkdown span {
+            color: #f1f5f9 !important;
+        }
         .status-badge-blue { background-color: rgba(97, 175, 239, 0.12); color: #61afef; border: 1px solid rgba(97, 175, 239, 0.25); }
         .status-badge-purple { background-color: rgba(198, 120, 221, 0.12); color: #c678dd; border: 1px solid rgba(198, 120, 221, 0.25); }
-        
-        /* Bullet point layout styling */
-        .bullet-list {
-            margin: 12px 0;
-            padding-left: 20px;
-        }
-        .bullet-item {
-            color: #e2e8f0 !important;
-            margin-bottom: 6px;
-            font-size: 0.98rem;
-        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -235,8 +227,8 @@ st.markdown("<h1 style='color: #ffe066 !important; background: none; -webkit-tex
 st.markdown("<p style='font-size: 1.1rem; color: #abb2bf; margin-top: -10px;'>Works without the internet to keep your files 100% private.</p>", unsafe_allow_html=True)
 
 if not st.session_state.messages:
-    # 🌟 STEP 1 & 2: ONBOARDING ROADMAP
-    st.markdown(f"""
+    # Render the guide within structured HTML parameters
+    st.markdown("""
         <div class='glass-card'>
             <div style="margin-bottom: 16px;">
                 <span class='status-badge status-badge-blue'>🛡️ 100% Offline Control</span>
@@ -358,32 +350,4 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
         st.markdown(f"""
             <div style="margin-bottom: 8px;">
                 <span class='status-badge status-badge-purple'>STATUS: {status_val}</span>
-                <span class='status-badge status-badge-blue'>MODE: {mode_val}</span>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # Stream the typing animation for maximum realism
-        resp_placeholder = st.empty()
-        running_text = ""
-        for word in mock_reply.split(" "):
-            running_text += word + " "
-            resp_placeholder.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{running_text}▌</div>', unsafe_allow_html=True)
-            time.sleep(0.02)
-        resp_placeholder.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{running_text}</div>', unsafe_allow_html=True)
-        
-        st.session_state.messages.append({
-            "role": "assistant", "content": running_text,
-            "status": status_val, "mode": mode_val
-        })
-
-# Social proof endorsement layout
-if not st.session_state.messages:
-    st.markdown("""
-        <div class='testimonial-container'>
-            <div style='display: flex; align-items: center; gap: 10px; margin-bottom: 6px;'>
-                <span style='font-size: 1.2rem;'>👤</span>
-                <strong>Verified Software Architect Review:</strong>
-            </div>
-            <g style='font-style: italic;'>&ldquo;Deploying this sandbox directly onto local infrastructure completely resolved data leak anxieties. Absolute game changer for secure file audits.&rdquo;</g>
-        </div>
-    """, unsafe_allow_html=True)
+                <span class='status-badge status
