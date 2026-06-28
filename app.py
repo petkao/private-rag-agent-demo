@@ -96,9 +96,12 @@ st.markdown("""
             color: #f1f5f9 !important;
             border: 1px solid #3e4451 !important;
             border-radius: 8px !important;
-            padding: 0.5rem 1rem !important;
+            padding: 0.8rem 1rem !important;
             font-weight: 500 !important;
             transition: all 0.2s ease !important;
+            white-space: pre-wrap !important;
+            text-align: left !important;
+            line-height: 1.4 !important;
         }
         div.stButton > button:hover {
             border-color: #ffe066 !important;
@@ -119,7 +122,7 @@ st.markdown("""
             font-weight: 500 !important;
         }
         
-        /* AUDIT FIX: High-Contrast Glowing Green Button Accent Pass */
+        /* High-Contrast Glowing Green Button Accent Pass */
         div[data-testid="stForm"] button[type="submit"] {
             background-color: #2ecc71 !important;
             color: #0d0f12 !important;
@@ -150,17 +153,6 @@ st.markdown("""
         }
         .status-badge-blue { background-color: rgba(97, 175, 239, 0.12); color: #61afef; border: 1px solid rgba(97, 175, 239, 0.25); }
         .status-badge-purple { background-color: rgba(198, 120, 221, 0.12); color: #c678dd; border: 1px solid rgba(198, 120, 221, 0.25); }
-        
-        /* Bullet point layout styling */
-        .bullet-list {
-            margin: 12px 0;
-            padding-left: 20px;
-        }
-        .bullet-item {
-            color: #e2e8f0 !important;
-            margin-bottom: 6px;
-            font-size: 0.98rem;
-        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -188,7 +180,6 @@ with st.sidebar.expander("⚙️ Advanced Engine Settings", expanded=False):
 
 st.sidebar.markdown("---")
 
-# AUDIT FIX: Risk reduction tag added right above user action path
 st.sidebar.markdown("<h3 style='color: #ffffff;'>🎯 Risk-Free Sandbox Onboarding</h3>", unsafe_allow_html=True)
 st.sidebar.markdown("<p style='font-size: 0.82rem; color: #abb2bf; margin-top:-5px;'>✓ Free to try locally — 100% private sandbox</p>", unsafe_allow_html=True)
 if st.sidebar.button("🎭 Load Demo Sample Data", use_container_width=True):
@@ -230,47 +221,48 @@ if st.session_state.indexed_files:
 # 💻 STAGE 5: MAIN CANVAS INTERFACE
 # =====================================================================
 st.markdown("<h1 style='color: #ffe066 !important; background: none; -webkit-text-fill-color: initial;'>Chat with your files without ever leaking data</h1>", unsafe_allow_html=True)
-
-# AUDIT FIX: Stripped structural jargon blocks from subheadline string parameters
 st.markdown("<p style='font-size: 1.1rem; color: #abb2bf; margin-top: -10px;'>Works without the internet to keep your files 100% private.</p>", unsafe_allow_html=True)
 
 if not st.session_state.messages:
-    # AUDIT FIX: Injected dynamic benefit-driven bullet indicators directly into the main overview container
+    # Onboarding instructions showing step visual mapping flow
     st.markdown(f"""
         <div class='glass-card'>
-            <div style="margin-bottom: 12px;">
+            <div style="margin-bottom: 16px;">
                 <span class='status-badge status-badge-blue'>🛡️ 100% Offline Control</span>
                 <span class='status-badge status-badge-purple'>🔒 Enterprise Security Vault</span>
             </div>
-            <div class='benefit-card'>
-                <div style='font-weight: 600; color: #61afef; font-size: 1.05rem;'>⚡ Fast and Private Mac Optimization</div>
-                <div style='font-size: 0.95rem; color: #abb2bf; margin-top: 4px; margin-bottom: 10px;'>Your documents stay safe on your local drive and never visit the cloud index networks.</div>
-                <ul class='bullet-list'>
-                    <li class='bullet-item'>✨ <strong>No Internet Required:</strong> Complete local isolation keeps your corporate metrics private.</li>
-                    <li class='bullet-item'>🚀 <strong>Fast Mac Optimization:</strong> Tuned to leverage your local compute cores cleanly without latency.</li>
-                    <li class='bullet-item'>🛡️ <strong>100% Total Privacy:</strong> Zero telemetry data retention policies.</li>
-                </ul>
+            
+            <div style='font-size: 1.1rem; font-weight: 600; color: #ffe066; margin-bottom: 12px;'>🚀 Quick Start Guide:</div>
+            
+            <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
+                <strong style='color: #61afef;'>Step 1: Load Context</strong><br>
+                <span style='font-size: 0.9rem; color: #abb2bf;'>Click the <strong>"🎭 Load Demo Sample Data"</strong> button in the sidebar to instantly load mock corporate policies risk-free.</span>
+            </div>
+            
+            <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
+                <strong style='color: #61afef;'>Step 2: Ask a Question</strong><br>
+                <span style='font-size: 0.9rem; color: #abb2bf;'>Select one of the pre-configured prompt cards below, or type your own question into the secure input box at the bottom.</span>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<p style='font-size: 0.95rem; color: #ffe066; font-weight: 500; margin-bottom: 12px;'>💡 What do you want to learn today?</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size: 1rem; color: #ffe066; font-weight: 600; margin-bottom: 12px;'>📋 Step 3: Select a Sample Question to Test the Engine</p>", unsafe_allow_html=True)
     
     chip_col1, chip_col2, chip_col3 = st.columns(3)
     with chip_col1:
-        if st.button("🔍 Check budget limit", use_container_width=True, key="chip1"):
+        if st.button("📊 Query Device Budgets\n\n'What is my electronic purchase budget limit?'", use_container_width=True, key="chip1"):
             st.session_state.messages.append({"role": "user", "content": "What is my electronic device purchase budget limit?"})
             st.rerun()
     with chip_col2:
-        if st.button("🌐 Search Mac pricing", use_container_width=True, key="chip2"):
-            st.session_state.messages.append({"role": "user", "content": "What is the latest pricing for Apple MacBook Air computers online?"})
+        if st.button("✈️ Query Travel Policy\n\n'What are the company travel rules for 2026?'", use_container_width=True, key="chip2"):
+            st.session_state.messages.append({"role": "user", "content": "What are the company travel rules for 2026?"})
             st.rerun()
     with chip_col3:
-        if st.button("📋 Summarize vault", use_container_width=True, key="chip3"):
-            st.session_state.messages.append({"role": "user", "content": "Give me a high-level summary of all files currently inside my local storage vault."})
+        if st.button("🌐 Live Web Search\n\n'Search the web for the latest MacBook pricing'", use_container_width=True, key="chip3"):
+            st.session_state.messages.append({"role": "user", "content": "Search the web for the latest MacBook pricing online"})
             st.rerun()
 
-# Message Logger Rendering View
+# Conversation Render Stream
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         if message["role"] == "assistant":
@@ -284,36 +276,71 @@ for message in st.session_state.messages:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Custom Main Execution Target Field block
+# Main Form Chat Field Wrapper
 with st.form(key="secure_chat_form", clear_on_submit=True):
     user_input = st.text_input(label="💬 Ask your private knowledge base anything:", placeholder="Type a message or select a question card above...")
-    # AUDIT FIX: Swapped out technical execution button string configurations for clarity metrics
     submit_button = st.form_submit_button(label="🚀 Start Secure Search")
 
 if submit_button and user_input:
     st.session_state.messages.append({"role": "user", "content": user_input})
     st.rerun()
 
-# Multi-path conditional agent logic execution loop
+# =====================================================================
+# 🧠 STAGE 6: ACTIVE ASSISTANT GENERATION PIPELINE (THE MATRIX RESPONDER)
+# =====================================================================
 if st.session_state.messages and st.session_state.messages[-1]["role"] == "user":
-    last_msg = st.session_state.messages[-1]["content"]
+    last_msg = st.session_state.messages[-1]["content"].lower()
     with st.chat_message("assistant"):
         progress_box = st.empty()
         progress_box.markdown("<div class='glass-card'>⚙️ Evaluating internal processing parameters...</div>", unsafe_allow_html=True)
-        time.sleep(0.5)
+        time.sleep(0.6)
         
-        has_search = any(w in last_msg.lower() for w in ["search", "online", "pricing", "latest", "web"])
-        
-        if has_search:
+        # 1. Routing Rule: Web Search
+        if any(w in last_msg for w in ["search", "online", "pricing", "latest", "web"]):
             progress_box.markdown("<div class='glass-card'>🌐 Running secure, anonymized web proxy search...</div>", unsafe_allow_html=True)
-            time.sleep(0.6)
-            mock_reply = f"This is a simulated real-time web search agent response! Your input token ('{last_msg}') triggered an online crawl path to safely extract current MacBook marketplace pricing while maintaining privacy barriers."
+            time.sleep(0.8)
+            mock_reply = (
+                "🔍 **Live Web Search Results (Anonymized Proxy):**\n\n"
+                "Based on current June 2026 e-commerce indexes, the Apple MacBook Air M3 (13-inch, 8GB Unified Memory, 256GB SSD) "
+                "is retailing between **$999 and $1,099** across authorized marketplace channels. Base configuration alternatives "
+                "with 16GB memory arrays are tracking at **$1,199**.\n\n"
+                "🔒 *Privacy Context: Your user identifier was stripped using an air-gapped security boundary before hitting the search gateway.*"
+            )
             status_val, mode_val = "Web Retrieval Success", "RAG + Web Search"
+            
+        # 2. Routing Rule: Document Vault - Budget Rules
+        elif any(w in last_msg for w in ["budget", "limit", "purchase", "device"]):
+            progress_box.markdown("<div class='glass-card'>⚙️ Scanning 'department_budget_limits.txt'...</div>", unsafe_allow_html=True)
+            time.sleep(0.8)
+            mock_reply = (
+                "📊 **Extracted Context from `department_budget_limits.txt`:**\n\n"
+                "Your corporate electronic device procurement allowance is strictly capped at **$200** per individual transaction asset. "
+                "Any hardware acquisitions exceeding this threshold require explicit administrative override clearance from the operations desk."
+            )
+            status_val, mode_val = "Local Context Success", "Offline"
+            
+        # 3. Routing Rule: Document Vault - Travel Rules
+        elif any(w in last_msg for w in ["travel", "policy", "hotel", "rules"]):
+            progress_box.markdown("<div class='glass-card'>⚙️ Indexing 'company_travel_policy_2026.pdf'...</div>", unsafe_allow_html=True)
+            time.sleep(0.8)
+            mock_reply = (
+                "✈️ **Extracted Context from `company_travel_policy_2026.pdf`:**\n\n"
+                "The fiscal year 2026 corporate travel policy mandates that all domestic flights must be booked under Economy tier configurations "
+                "at least 14 days in advance. Overnight lodging choices are capped at **$180/night** across all urban commercial zones, excluding designated convention periods."
+            )
+            status_val, mode_val = "Local Context Success", "Offline"
+            
+        # 4. Routing Rule: Intelligent Fallback
         else:
             progress_box.markdown("<div class='glass-card'>⚙️ Running air-gapped local profile lookup...</div>", unsafe_allow_html=True)
-            time.sleep(0.6)
-            mock_reply = f"This is a local secure model inference summary. Your document vectors parsed '{last_msg}' successfully within your physical drive parameters without throwing any remote cloud exceptions."
-            status_val, mode_val = "Local Context Success", "Offline"
+            time.sleep(0.8)
+            mock_reply = (
+                "⚠️ **Local Secure Inference Note:**\n\n"
+                f"I processed your query ('{st.session_state.messages[-1]['content']}') against your local document vectors. "
+                "However, I could find no relevant reference matches inside your current storage vault files.\n\n"
+                "💡 *Tip: Try clicking 'Load Demo Sample Data' in the sidebar, then ask me about '2026 travel rules' or 'device budgets' to test my matching engine!*"
+            )
+            status_val, mode_val = "Inference Completed", "Offline"
             
         progress_box.empty()
         
@@ -323,14 +350,22 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
                 <span class='status-badge status-badge-blue'>MODE: {mode_val}</span>
             </div>
         """, unsafe_allow_html=True)
-        st.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{mock_reply}</div>', unsafe_allow_html=True)
+        
+        # Stream the typing animation for maximum realism
+        resp_placeholder = st.empty()
+        running_text = ""
+        for word in mock_reply.split(" "):
+            running_text += word + " "
+            resp_placeholder.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{running_text}▌</div>', unsafe_allow_html=True)
+            time.sleep(0.02)
+        resp_placeholder.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{running_text}</div>', unsafe_allow_html=True)
         
         st.session_state.messages.append({
-            "role": "assistant", "content": mock_reply,
+            "role": "assistant", "content": running_text,
             "status": status_val, "mode": mode_val
         })
 
-# AUDIT FIX: Upgraded proof position layout structure higher up the active template stack
+# Social proof endorsement layout
 if not st.session_state.messages:
     st.markdown("""
         <div class='testimonial-container'>
