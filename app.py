@@ -24,16 +24,24 @@ st.markdown("""
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
             background: linear-gradient(135deg, #090a0f 0%, #11131e 50%, #1a1528 100%) !important;
         }
-        
-        /* 2. DESTROY THE WHITE HEADER, FOOTER, AND BOTTOM BLOCKS COMPLETELY */
+
+        /* 2. DESTROY EVERY CONCEIVABLE HEADER, FOOTER, AND BOTTOM LAYOUT BACKGROUND */
         [data-testid="stHeader"], 
         [data-testid="stBottom"],
         [data-testid="stBottomBlockContainer"],
+        .stActionButton,
+        div[style*="position: fixed"],
+        div[data-aria-stable*="true"],
         footer {
             background-color: transparent !important;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
+        }
+        
+        /* Force the inner chat container wrapper to match the app background */
+        div[data-testid="stForm"] {
+            background-color: transparent !important;
         }
         
         /* 3. Main Content Constraints */
