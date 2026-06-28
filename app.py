@@ -235,7 +235,7 @@ st.markdown("<h1 style='color: #ffe066 !important; background: none; -webkit-tex
 st.markdown("<p style='font-size: 1.1rem; color: #abb2bf; margin-top: -10px;'>Works without the internet to keep your files 100% private.</p>", unsafe_allow_html=True)
 
 if not st.session_state.messages:
-    # Onboarding instructions showing step visual mapping flow
+    # 🌟 STEP 1 & 2: ONBOARDING ROADMAP
     st.markdown(f"""
         <div class='glass-card'>
             <div style="margin-bottom: 16px;">
@@ -247,12 +247,12 @@ if not st.session_state.messages:
             
             <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
                 <strong style='color: #61afef;'>Step 1: Load Context</strong><br>
-                <span style='font-size: 0.9rem; color: #abb2bf;'>Click the <strong>\"🎭 Load Demo Sample Data\"</strong> button in the sidebar to instantly load mock corporate policies risk-free.[cite: 2]</span>
+                <span style='font-size: 0.9rem; color: #abb2bf;'>Click the <strong>"🎭 Load Demo Sample Data"</strong> button in the sidebar to instantly load mock corporate policies risk-free.</span>
             </div>
             
             <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
                 <strong style='color: #61afef;'>Step 2: Ask a Question</strong><br>
-                <span style='font-size: 0.9rem; color: #abb2bf;'>Select one of the pre-configured prompt cards below, or type your own question into the secure input box at the bottom.[cite: 2]</span>
+                <span style='font-size: 0.9rem; color: #abb2bf;'>Select one of the pre-configured prompt cards below, or type your own question into the secure input box at the bottom.</span>
             </div>
         </div>
     """, unsafe_allow_html=True)
