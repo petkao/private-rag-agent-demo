@@ -153,6 +153,17 @@ st.markdown("""
         }
         .status-badge-blue { background-color: rgba(97, 175, 239, 0.12); color: #61afef; border: 1px solid rgba(97, 175, 239, 0.25); }
         .status-badge-purple { background-color: rgba(198, 120, 221, 0.12); color: #c678dd; border: 1px solid rgba(198, 120, 221, 0.25); }
+        
+        /* Bullet point layout styling */
+        .bullet-list {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        .bullet-item {
+            color: #e2e8f0 !important;
+            margin-bottom: 6px;
+            font-size: 0.98rem;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -236,12 +247,12 @@ if not st.session_state.messages:
             
             <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
                 <strong style='color: #61afef;'>Step 1: Load Context</strong><br>
-                <span style='font-size: 0.9rem; color: #abb2bf;'>Click the <strong>"🎭 Load Demo Sample Data"</strong> button in the sidebar to instantly load mock corporate policies risk-free.</span>
+                <span style='font-size: 0.9rem; color: #abb2bf;'>Click the <strong>\"🎭 Load Demo Sample Data\"</strong> button in the sidebar to instantly load mock corporate policies risk-free.[cite: 2]</span>
             </div>
             
             <div style='margin-bottom: 10px; border-left: 3px solid #61afef; padding-left: 12px;'>
                 <strong style='color: #61afef;'>Step 2: Ask a Question</strong><br>
-                <span style='font-size: 0.9rem; color: #abb2bf;'>Select one of the pre-configured prompt cards below, or type your own question into the secure input box at the bottom.</span>
+                <span style='font-size: 0.9rem; color: #abb2bf;'>Select one of the pre-configured prompt cards below, or type your own question into the secure input box at the bottom.[cite: 2]</span>
             </div>
         </div>
     """, unsafe_allow_html=True)
