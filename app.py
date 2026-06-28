@@ -10,56 +10,57 @@ st.set_page_config(
     page_title="🔒 Private AI Knowledge Base",
     page_icon="🔒",
     layout="wide",
-    initial_sidebar_state="auto"
+    initial_sidebar_state="expanded"
 )
 
-# 🎨 STAGE 2: INJECT EMULATED DARK IDE STYLING LAYERS
+# 🎨 STAGE 2: INJECT PREMIUM DARK MODE STYLING & ELIMINATE WHITE BLOCKS
 st.markdown("""
     <style>
+        /* 1. Base App Canvas Background */
         .stApp {
             background-color: #0d0f12 !important;
             color: #e2e8f0 !important;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+            background: linear-gradient(135deg, #090a0f 0%, #11131e 50%, #1a1528 100%) !important;
         }
+        
+        /* 2. DESTROY THE WHITE HEADER AND FOOTER BLOCKS */
+        [data-testid="stHeader"] {
+            background-color: transparent !important;
+            background: transparent !important;
+        }
+        [data-testid="stBottomBlockContainer"] {
+            background-color: transparent !important;
+            background: transparent !important;
+        }
+        
+        /* 3. Main Content Constraints */
         [data-testid="stMainBlockContainer"] {
             max-width: 840px !important;
-            padding: 1rem 2rem 5rem 2rem !important;
+            padding: 2rem 2rem 6rem 2rem !important;
             margin: 0 auto !important;
         }
-        [data-testid="stSidebarUserContent"] {
-            padding-top: 1rem !important;
-        }
+        
+        /* 4. Sidebar Overrides & Visibility Fixes */
         [data-testid="stSidebar"] {
             background-color: #16191f !important;
             border-right: 1px solid #262c36 !important;
         }
-        [data-testid="stVerticalBlock"] {
-            gap: 0.75rem !important;
-        }
-        [data-testid="stChatInput"] {
-            background-color: #16191f !important;
-            border: 1px solid #262c36 !important;
-            border-radius: 12px !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-        }
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
-        .stApp {
-            font-family: 'Outfit', sans-serif;
-            background: linear-gradient(135deg, #090a0f 0%, #11131e 50%, #1a1528 100%) !important;
-        }
-        .stMarkdown p, .stMarkdown li, .stMarkdown span {
-            color: #f1f5f9 !important;
-        }
-        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {
-            color: #F0F2F6 !important;
-            font-weight: 700 !important;
-        }
         div[data-testid="stSidebar"] {
-            background: rgba(13, 15, 24, 0.85) !important;
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(13, 15, 24, 0.95) !important;
         }
+        
+        /* FORCE SIDEBAR EXPANDER TEXT TO BE VISIBLE */
+        [data-testid="stSidebar"] .stDetails summary {
+            color: #ffffff !important;
+            font-weight: 600 !important;
+        }
+        [data-testid="stSidebar"] .stDetails summary svg {
+            fill: #ffffff !important;
+            color: #ffffff !important;
+        }
+        
+        /* 5. High-Visibility Custom Glass Cards */
         .glass-card {
             background: rgba(25, 28, 41, 0.6);
             backdrop-filter: blur(16px);
@@ -76,19 +77,32 @@ st.markdown("""
             border-radius: 4px 12px 12px 4px;
             margin-top: 15px;
         }
-        h1, h2, h3 {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 700 !important;
-            background: linear-gradient(90deg, #61afef, #c678dd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        
+        /* 6. Clean Button Layouts for Prompt Templates */
+        div.stButton > button {
+            background-color: #1e242e !important;
+            color: #f1f5f9 !important;
+            border: 1px solid #3e4451 !important;
+            border-radius: 8px !important;
+            padding: 0.5rem 1rem !important;
+            font-weight: 500 !important;
+            transition: all 0.2s ease !important;
         }
-        section[data-testid="stFileUploader"] {
-            background-color: rgba(20, 22, 33, 0.5) !important;
-            border: 2px dashed rgba(255, 255, 255, 0.15) !important;
+        div.stButton > button:hover {
+            border-color: #ffe066 !important;
+            color: #ffe066 !important;
+            background-color: #282e3d !important;
+        }
+        
+        /* 7. Clean Chat Input Area */
+        [data-testid="stChatInput"] {
+            background-color: #16191f !important;
+            border: 1px solid #3e4451 !important;
             border-radius: 12px !important;
-            padding: 15px !important;
+            color: #ffffff !important;
         }
+        
+        /* 8. Badges */
         .status-badge {
             display: inline-block;
             padding: 5px 12px;
@@ -104,16 +118,8 @@ st.markdown("""
         .status-badge-blue { background-color: rgba(97, 175, 239, 0.12); color: #61afef; border: 1px solid rgba(97, 175, 239, 0.25); }
         .status-badge-purple { background-color: rgba(198, 120, 221, 0.12); color: #c678dd; border: 1px solid rgba(198, 120, 221, 0.25); }
         
-        /* Custom styled template chips */
-        .div-chip-button button {
-            background-color: #1e242e !important;
-            border: 1px solid #262c36 !important;
-            color: #e2e8f0 !important;
-        }
-        
         @media (max-width: 768px) {
             [data-testid="stMainBlockContainer"] { padding: 1rem !important; }
-            h1 { font-size: 2rem !important; }
         }
     </style>
 """, unsafe_allow_html=True)
@@ -137,15 +143,15 @@ embedding_options = ["bge-large-en-v1.5", "nomic-embed-text"]
 # =====================================================================
 # 🧠 STAGE 4: CONTROL CENTER (SIDEBAR)
 # =====================================================================
-st.sidebar.markdown("<h2 style='text-align: center; margin-top:0;'>🔒 Vault Manager</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='color: #ffffff; margin-top:0;'>🔒 Vault Manager</h2>", unsafe_allow_html=True)
 
-# AUDIT FIX: Hidden the complex technical model dropdown selectors behind an expander
+# THE EXPANDER WIDGET (Forced text color white via CSS rule above)
 with st.sidebar.expander("⚙️ Advanced Engine Settings", expanded=False):
     llm_model = st.selectbox("Select LLM Model", llm_options, index=0)
     embedding_model = st.selectbox("Select Embedding Model", embedding_options, index=0)
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 📥 Step 1: Add Local Files")
+st.sidebar.markdown("<h3 style='color: #ffffff;'>📥 Step 1: Add Local Files</h3>", unsafe_allow_html=True)
 uploaded_files = st.sidebar.file_uploader("Drop project files here", type=["pdf", "txt", "png", "jpg"], accept_multiple_files=True)
 
 if uploaded_files:
@@ -156,7 +162,7 @@ if uploaded_files:
             })
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 🗄️ Your Files")
+st.sidebar.markdown("<h3 style='color: #ffffff;'>🗄️ Your Files</h3>", unsafe_allow_html=True)
 
 if not st.session_state.indexed_files:
     st.sidebar.info("Your local vault is currently empty.")
@@ -168,19 +174,17 @@ else:
             st.rerun()
 
 if st.session_state.indexed_files:
-    st.sidebar.markdown("#### Ready to Chat")
+    st.sidebar.markdown("<h4 style='color: #ffffff;'>Ready to Chat</h4>", unsafe_allow_html=True)
     for f in st.session_state.indexed_files:
-        icon = "📄"
-        st.sidebar.markdown(f"<span class='status-badge'>{icon} {f['filename']}</span>", unsafe_allow_html=True)
+        st.sidebar.markdown(f"<span class='status-badge'>📄 {f['filename']}</span>", unsafe_allow_html=True)
 
 # =====================================================================
 # 💻 STAGE 5: MAIN APP RENDERING ARCHITECTURE
 # =====================================================================
-# AUDIT FIX: Upgraded copy to focus heavily on the ultimate security result
-st.markdown("<h1>🔒 Chat with your files without ever leaking data</h1>", unsafe_allow_html=True)
-st.markdown("<p style='font-size: 1.1rem; color: #abb2bf;'>A secure, air-gapped environment running completely on your local computer infrastructure.</p>", unsafe_allow_html=True)
+# VISUAL FIX: Changed Title to High-Contrast Yellow color for optimal visibility
+st.markdown("<h1 style='color: #ffe066 !important; background: none; -webkit-text-fill-color: initial;'>Chat with your files without ever leaking data</h1>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 1.1rem; color: #abb2bf; margin-top: -10px;'>A secure, air-gapped environment running completely on your local computer infrastructure.</p>", unsafe_allow_html=True)
 
-# AUDIT FIX: Transformed empty space into a clear "Capability vs Benefit" block
 if not st.session_state.messages:
     st.markdown(f"""
         <div class='glass-card'>
@@ -195,21 +199,24 @@ if not st.session_state.messages:
         </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<p style='font-size: 0.9rem; color: #64748b; margin-bottom: 8px;'>💡 What do you want to learn today?</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size: 0.95rem; color: #ffe066; font-weight: 500; margin-bottom: 12px;'>💡 What do you want to learn today?</p>", unsafe_allow_html=True)
+    
+    # Render visible, clean prompt columns
     chip_col1, chip_col2, chip_col3 = st.columns(3)
     with chip_col1:
-        if st.button("🔍 Check local budget limit", use_container_width=True, key="chip1"):
+        if st.button("🔍 Check budget limit", use_container_width=True, key="chip1"):
             st.session_state.messages.append({"role": "user", "content": "What is my electronic device purchase budget limit?"})
             st.rerun()
     with chip_col2:
-        if st.button("🌐 Search MacBook pricing", use_container_width=True, key="chip2"):
+        if st.button("🌐 Search Mac pricing", use_container_width=True, key="chip2"):
             st.session_state.messages.append({"role": "user", "content": "What is the latest pricing for Apple MacBook Air computers online?"})
             st.rerun()
     with chip_col3:
-        if st.button("📋 Summarize vault files", use_container_width=True, key="chip3"):
+        if st.button("📋 Summarize vault", use_container_width=True, key="chip3"):
             st.session_state.messages.append({"role": "user", "content": "Give me a high-level summary of all files currently inside my local storage vault."})
             st.rerun()
 
+# Message Log
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         if message["role"] == "assistant":
@@ -219,8 +226,9 @@ for message in st.session_state.messages:
                     <span class='status-badge status-badge-blue'>MODE: {message.get("mode", "Offline")}</span>
                 </div>
             """, unsafe_allow_html=True)
-        st.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 6px id=text;">{message["content"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{message["content"]}</div>', unsafe_allow_html=True)
 
+# Chat Input Canvas
 if user_input := st.chat_input("Ask your private agent anything...", key="chat_input"):
     st.session_state.messages.append({"role": "user", "content": user_input})
     st.rerun()
@@ -230,7 +238,7 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
     with st.chat_message("assistant"):
         progress_box = st.empty()
         progress_box.markdown("<div class='glass-card'>⚙️ Running local context match query...</div>", unsafe_allow_html=True)
-        time.sleep(0.7)
+        time.sleep(0.5)
         progress_box.empty()
         
         mock_reply = f"This is a local secure model inference summary. Your document vectors parsed '{last_msg}' successfully within your physical drive parameters without throwing any remote cloud exceptions."
@@ -241,7 +249,7 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
                 <span class='status-badge status-badge-blue'>MODE: Offline</span>
             </div>
         """, unsafe_allow_html=True)
-        st.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 6px;">{mock_reply}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{mock_reply}</div>', unsafe_allow_html=True)
         
         st.session_state.messages.append({
             "role": "assistant", "content": mock_reply,
