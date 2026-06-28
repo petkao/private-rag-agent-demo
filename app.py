@@ -13,25 +13,21 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 🎨 STAGE 2: INJECT PREMIUM DARK MODE STYLING & ELIMINATE WHITE BLOCKS
+# 🎨 STAGE 2: INJECT PREMIUM DARK MODE STYLING (WHITE BLOCKS REMOVED)
 st.markdown("""
     <style>
-
         /* 1. Base App Canvas Background */
-        .stApp, [data-testid="stAppViewContainer"] {
+        .stApp {
             background-color: #0d0f12 !important;
             color: #e2e8f0 !important;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
             background: linear-gradient(135deg, #090a0f 0%, #11131e 50%, #1a1528 100%) !important;
         }
-
-        /* 2. DESTROY EVERY CONCEIVABLE HEADER, FOOTER, AND BOTTOM LAYOUT BACKGROUND */
+        
+        /* 2. COMPLETELY STRIP OUT HEADER AND NATIVE BOTTOM CONTAINER BACKGROUNDS */
         [data-testid="stHeader"], 
         [data-testid="stBottom"],
         [data-testid="stBottomBlockContainer"],
-        .stActionButton,
-        div[style*="position: fixed"],
-        div[data-aria-stable*="true"],
         footer {
             background-color: transparent !important;
             background: transparent !important;
@@ -39,15 +35,10 @@ st.markdown("""
             box-shadow: none !important;
         }
         
-        /* Force the inner chat container wrapper to match the app background */
-        div[data-testid="stForm"] {
-            background-color: transparent !important;
-        }
-        
-        /* 3. Main Content Constraints */
+        /* 3. Main Content Grid Layout Constraints */
         [data-testid="stMainBlockContainer"] {
             max-width: 840px !important;
-            padding: 2rem 2rem 6rem 2rem !important;
+            padding: 2rem 2rem 2rem 2rem !important;
             margin: 0 auto !important;
         }
         
@@ -60,7 +51,7 @@ st.markdown("""
             background: rgba(13, 15, 24, 0.95) !important;
         }
         
-        /* FORCE SIDEBAR EXPANDER TEXT TO BE VISIBLE */
+        /* Force Sidebar Expander Wording Text to Be Visible */
         [data-testid="stSidebar"] .stDetails summary {
             color: #ffffff !important;
             font-weight: 600 !important;
@@ -70,7 +61,7 @@ st.markdown("""
             color: #ffffff !important;
         }
         
-        /* 5. High-Visibility Custom Glass Cards */
+        /* 5. High-Visibility Custom Layout Cards */
         .glass-card {
             background: rgba(25, 28, 41, 0.6);
             backdrop-filter: blur(16px);
@@ -88,7 +79,7 @@ st.markdown("""
             margin-top: 15px;
         }
         
-        /* 6. Clean Button Layouts for Prompt Templates */
+        /* 6. Styled Template Prompt Chip Buttons */
         div.stButton > button {
             background-color: #1e242e !important;
             color: #f1f5f9 !important;
@@ -104,15 +95,20 @@ st.markdown("""
             background-color: #282e3d !important;
         }
         
-        /* 7. Clean Chat Input Area */
-        [data-testid="stChatInput"] {
-            background-color: #16191f !important;
-            border: 1px solid #3e4451 !important;
-            border-radius: 12px !important;
-            color: #ffffff !important;
+        /* 7. CUSTOM CHAT FIELD INPUT OVERRIDES (Replaces st.chat_input styling block) */
+        div[data-testid="stForm"] {
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background-color: rgba(22, 25, 31, 0.8) !important;
+            border-radius: 14px !important;
+            padding: 10px !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+        }
+        div[data-testid="stForm"] [data-testid="stWidgetLabel"] p {
+            color: #ffe066 !important;
+            font-weight: 500 !important;
         }
         
-        /* 8. Badges */
+        /* 8. Informational Badges */
         .status-badge {
             display: inline-block;
             padding: 5px 12px;
@@ -127,10 +123,6 @@ st.markdown("""
         }
         .status-badge-blue { background-color: rgba(97, 175, 239, 0.12); color: #61afef; border: 1px solid rgba(97, 175, 239, 0.25); }
         .status-badge-purple { background-color: rgba(198, 120, 221, 0.12); color: #c678dd; border: 1px solid rgba(198, 120, 221, 0.25); }
-        
-        @media (max-width: 768px) {
-            [data-testid="stMainBlockContainer"] { padding: 1rem !important; }
-        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -155,7 +147,6 @@ embedding_options = ["bge-large-en-v1.5", "nomic-embed-text"]
 # =====================================================================
 st.sidebar.markdown("<h2 style='color: #ffffff; margin-top:0;'>🔒 Vault Manager</h2>", unsafe_allow_html=True)
 
-# THE EXPANDER WIDGET (Forced text color white via CSS rule above)
 with st.sidebar.expander("⚙️ Advanced Engine Settings", expanded=False):
     llm_model = st.selectbox("Select LLM Model", llm_options, index=0)
     embedding_model = st.selectbox("Select Embedding Model", embedding_options, index=0)
@@ -191,7 +182,6 @@ if st.session_state.indexed_files:
 # =====================================================================
 # 💻 STAGE 5: MAIN APP RENDERING ARCHITECTURE
 # =====================================================================
-# VISUAL FIX: Changed Title to High-Contrast Yellow color for optimal visibility
 st.markdown("<h1 style='color: #ffe066 !important; background: none; -webkit-text-fill-color: initial;'>Chat with your files without ever leaking data</h1>", unsafe_allow_html=True)
 st.markdown("<p style='font-size: 1.1rem; color: #abb2bf; margin-top: -10px;'>A secure, air-gapped environment running completely on your local computer infrastructure.</p>", unsafe_allow_html=True)
 
@@ -211,7 +201,6 @@ if not st.session_state.messages:
 
     st.markdown("<p style='font-size: 0.95rem; color: #ffe066; font-weight: 500; margin-bottom: 12px;'>💡 What do you want to learn today?</p>", unsafe_allow_html=True)
     
-    # Render visible, clean prompt columns
     chip_col1, chip_col2, chip_col3 = st.columns(3)
     with chip_col1:
         if st.button("🔍 Check budget limit", use_container_width=True, key="chip1"):
@@ -226,7 +215,7 @@ if not st.session_state.messages:
             st.session_state.messages.append({"role": "user", "content": "Give me a high-level summary of all files currently inside my local storage vault."})
             st.rerun()
 
-# Message Log
+# Historical Conversational Logging
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         if message["role"] == "assistant":
@@ -238,11 +227,18 @@ for message in st.session_state.messages:
             """, unsafe_allow_html=True)
         st.markdown(f'<div style="line-height: 1.6; color: #f1f5f9; padding: 2px 6px;">{message["content"]}</div>', unsafe_allow_html=True)
 
-# Chat Input Canvas
-if user_input := st.chat_input("Ask your private agent anything...", key="chat_input"):
+st.markdown("<br>", unsafe_allow_html=True)
+
+# 🛠️ NATIVE FORM WORKAROUND: Bypasses the stubborn Streamlit bottom white box
+with st.form(key="secure_chat_form", clear_on_submit=True):
+    user_input = st.text_input(label="💬 Query Local Architecture:", placeholder="Ask your private agent anything...")
+    submit_button = st.form_submit_button(label="🚀 Execute Agent Search")
+
+if submit_button and user_input:
     st.session_state.messages.append({"role": "user", "content": user_input})
     st.rerun()
 
+# Active Assistant Generation Pipeline
 if st.session_state.messages and st.session_state.messages[-1]["role"] == "user":
     last_msg = st.session_state.messages[-1]["content"]
     with st.chat_message("assistant"):
@@ -265,33 +261,3 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
             "role": "assistant", "content": mock_reply,
             "status": "Local Context Success", "mode": "Offline"
         })
-
-
-# =====================================================================
-# ⚡ THE FINISHING BLOW: JAVASCRIPT BACKGROUND STRIPPER
-# =====================================================================
-st.components.v1.html("""
-    <script>
-        function stripWhiteBlocks() {
-            // Find all potential bottom layout wrappers
-            const targets = [
-                window.parent.document.querySelector('[data-testid="stBottom"]'),
-                window.parent.document.querySelector('[data-testid="stBottomBlockContainer"]'),
-                window.parent.document.querySelector('footer')
-            ];
-            
-            targets.forEach(el => {
-                if (el) {
-                    el.style.backgroundColor = 'transparent';
-                    el.style.background = 'transparent';
-                    el.style.boxShadow = 'none';
-                    el.style.border = 'none';
-                }
-            });
-        }
-        
-        // Run immediately and keep checking for a few seconds to handle slow loading
-        stripWhiteBlocks();
-        setInterval(stripWhiteBlocks, 500);
-    </script>
-""", height=0)        
