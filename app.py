@@ -149,11 +149,14 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 if "indexed_files" not in st.session_state:
     st.session_state.indexed_files = []
+# Dynamic key tracking to force refresh the uploader widget state safely
+if "uploader_key" not in st.session_state:
+    st.session_state.uploader_key = 0
 
 llm_options = ["qwen2.5:7b (Demo)", "gemma4:12b (Demo)", "deepseek-r1:8b (Demo)"]
 embedding_options = ["bge-large-en-v1.5", "nomic-embed-text"]
 
-# 🛠️ HELPER FUNCTION: Deletion callback to process state immediately
+# 🛠️ HELPER FUNCTION: Deletion callback to clear data vault items instantly
 def remove_vault_file(file_to_remove):
     st.session_state.indexed_files.remove(file_to_remove)
 
@@ -181,12 +184,26 @@ if st.sidebar.button("🎭 Load Demo Sample Data", use_container_width=True):
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("<h3 style='color: #ffffff;'>📥 Step 1: Add Local Files</h3>", unsafe_allow_html=True)
-uploaded_files = st.sidebar.file_uploader("Drop project files here", type=["pdf", "txt", "png", "jpg"], accept_multiple_files=True)
 
+# FIX: Attached dynamic uploader key to wipe the widget cache dynamically on capture
+uploaded_files = st.sidebar.file_uploader(
+    "Drop project files here", 
+    type=["pdf", "txt", "png", "jpg"], 
+    accept_multiple_files=True,
+    key=f"uploader_{st.session_state.uploader_key}"
+)
+
+# Process incoming uploads immediately, update vault state, and flip key boundary parameters
 if uploaded_files:
+    new_files_added = False
     for uploaded_file in uploaded_files:
         if not any(f["filename"] == uploaded_file.name for f in st.session_state.indexed_files):
             st.session_state.indexed_files.append({"filename": uploaded_file.name, "chunks": 5})
+            new_files_added = True
+    if new_files_added:
+        # Increment key counter to force flash widget upload history memory arrays
+        st.session_state.uploader_key += 1
+        st.rerun()
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("<h3 style='color: #ffffff;'>🗄️ Your Files</h3>", unsafe_allow_html=True)
@@ -196,7 +213,6 @@ if not st.session_state.indexed_files:
 else:
     for f in list(st.session_state.indexed_files):
         display_name = f["filename"] if len(f["filename"]) <= 22 else f"{f['filename'][:19]}..."
-        # Callback function is hooked up directly here
         st.sidebar.button(
             f"🗑️ Remove {display_name}", 
             key=f"del_{f['filename']}",
@@ -324,6 +340,7 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
             
         progress_box.empty()
         
+        # Safe syntax handling for status formatting strings
         st.markdown(f"""
             <div style="margin-bottom: 8px;">
                 <span class='status-badge status-badge-purple'>STATUS: {status_val}</span>
