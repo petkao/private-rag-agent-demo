@@ -153,6 +153,10 @@ if "indexed_files" not in st.session_state:
 llm_options = ["qwen2.5:7b (Demo)", "gemma4:12b (Demo)", "deepseek-r1:8b (Demo)"]
 embedding_options = ["bge-large-en-v1.5", "nomic-embed-text"]
 
+# 🛠️ HELPER FUNCTION: Deletion callback to process state immediately
+def remove_vault_file(file_to_remove):
+    st.session_state.indexed_files.remove(file_to_remove)
+
 # =====================================================================
 # 🧠 STAGE 4: SIDEBAR GENERATION CENTER
 # =====================================================================
@@ -192,9 +196,13 @@ if not st.session_state.indexed_files:
 else:
     for f in list(st.session_state.indexed_files):
         display_name = f["filename"] if len(f["filename"]) <= 22 else f"{f['filename'][:19]}..."
-        if st.sidebar.button(f"🗑️ Remove {display_name}", key=f"del_{f['filename']}"):
-            st.session_state.indexed_files.remove(f)
-            st.rerun()
+        # Callback function is hooked up directly here
+        st.sidebar.button(
+            f"🗑️ Remove {display_name}", 
+            key=f"del_{f['filename']}",
+            on_click=remove_vault_file,
+            args=(f,)
+        )
 
 if st.session_state.indexed_files:
     st.sidebar.markdown("<h4 style='color: #ffffff;'>Ready to Chat</h4>", unsafe_allow_html=True)
@@ -208,7 +216,6 @@ st.markdown("<h1 style='color: #ffe066 !important; background: none; -webkit-tex
 st.markdown("<p style='font-size: 1.1rem; color: #abb2bf; margin-top: -10px;'>Works without the internet to keep your files 100% private.</p>", unsafe_allow_html=True)
 
 if not st.session_state.messages:
-    # REFACTOR: Native Streamlit containers replace raw HTML strings to avoid layout breaking
     with st.container(border=True):
         st.markdown("""
             <span class='status-badge status-badge-blue'>🛡️ 100% Offline Control</span>
@@ -317,7 +324,6 @@ if st.session_state.messages and st.session_state.messages[-1]["role"] == "user"
             
         progress_box.empty()
         
-        # Safe syntax handling for status formatting strings
         st.markdown(f"""
             <div style="margin-bottom: 8px;">
                 <span class='status-badge status-badge-purple'>STATUS: {status_val}</span>
